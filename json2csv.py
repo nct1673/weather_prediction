@@ -76,6 +76,6 @@ df = pd.DataFrame(all_records)
 # df.replace("NA", np.nan, inplace=True)
 
 # Save to CSV
-df.to_csv("data_csv/raw_250101.csv", index=False)
+df.to_csv("data_csv/raw_2.csv", index=False)
 print("✅ All JSON files have been processed and saved to 'data_csv/raw_250101.csv'")
 
