@@ -6,25 +6,27 @@ from zoneinfo import ZoneInfo
 import time
 from my_api_key import API_KEY
 
+
+
+# Things to change:
+# 1. dt (first is below this part, second is in for loop)
+# 2. csv file name
+# 3. record dt for next time execution
+
+# 061725 last dt: 1738854000
+
+
 # Replace with your actual API key
-API_KEY = ""
+# API_KEY = ""
 
 # Example coordinates: Klang
 lat = 3.033
 lon = 101.45
-dt = 1749834000 #14/6/25
+dt = 1735660800 #1/1/25
 
 # One Call 3.0 endpoint
 url = "https://api.openweathermap.org/data/3.0/onecall"
 url2 = "https://api.openweathermap.org/data/3.0/onecall/timemachine" # timestamp data
-
-
-var_names = [
-    "lat","lon","timezone","timezone_offset","dt",
-    "sunrise","sunset","temp","feels_like","pressure",
-    "humidity","dew_point","uvi","clouds","visibility",
-    "wind_speed","wind_deg","id","main","description","icon"
-]
 
 
 #######################################################################################33
@@ -35,14 +37,15 @@ df = pd.DataFrame()
 
 start = time.time()
 
-for i in range(48):
-    dt = 1749834000 # Sunday, June 14, 2025 12:00:00 AM GMT+08:00
+for i in range(888):
+    print(f'Extracting step: {i}')
+    dt = 1735660800 
     dt += i*3600 # 3600secs = 1 hour
     params = {
     "lat": lat,
     "lon": lon, 
     "appid": API_KEY,
-    # "units": "metric",  # or 'imperial'
+    "units": "metric",  # or 'imperial'
     'dt': dt,
     # "exclude": "minutely,daily"  # you can exclude parts you don't need
     }
@@ -62,39 +65,9 @@ for i in range(48):
     else:
         print("Error:", response.status_code, response.text)
 
-    lat = data['lat']
-    lon = data['lon']
-    timezone = data['timezone']
-    timezone_offset = data['timezone_offset']
-
-    # current
-    curr = data['data'][0]
-    dt = curr['dt']
-    sunrise = curr['sunrise']
-    sunset = curr['sunset']
-    temp = curr['temp']
-    feels_like = curr['feels_like']
-    pressure = curr['pressure']
-    humidity = curr['humidity']
-    dew_point = curr['dew_point']
-    uvi = curr['uvi']
-    clouds = curr['clouds']
-    visibility = curr['visibility']
-    wind_speed = curr['wind_speed']
-    wind_deg = curr['wind_deg']
-
-    #  current >> weather >> :
-    weather = data['data'][0]['weather'][0]
-    id = weather['id']
-    main = weather['main']
-    description = weather['description']
-    icon = weather['icon']
     
-    data_df = {var: globals()[var] for var in var_names}
-    df_temp = pd.DataFrame([data_df])
-    df = pd.concat([df, df_temp], ignore_index=True)
 
-df.to_csv('data_csv/data_raw_250614.csv')
+print(f'Last dt: {dt}')
 time_use = time.time() - start
 print(f"Done, finished in {time_use} seconds")
 

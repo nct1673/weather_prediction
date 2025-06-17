@@ -26,18 +26,18 @@ params = {
 }
 
 response = requests.get(url2, params=params)
+data = response.json()
+# if response.status_code == 200:
+#     data = response.json()
 
-if response.status_code == 200:
-    data = response.json()
-
-    # Save to JSON file
-    with open("weather_data_hist.json", "w") as f:
-        json.dump(data, f, indent=4)
+#     # Save to JSON file
+#     with open("weather_data_hist.json", "w") as f:
+#         json.dump(data, f, indent=4)
     
-    print("Weather data saved to weather_data.json")
-    # print(type(data))
-else:
-    print("Error:", response.status_code, response.text)
+#     print("Weather data saved to weather_data.json")
+#     # print(type(data))
+# else:
+#     print("Error:", response.status_code, response.text)
 
 
 lat = data['lat']
@@ -80,10 +80,10 @@ var_names2 = [
 ]
 
 # Use locals() or globals() to fetch their values dynamically
-data_df = {var: globals()[var] for var in var_names2}
+data_df = {var: globals()[var] for var in var_names1}
 df = pd.DataFrame([data_df])
 df.to_csv('weather_raw.csv')
-# print(df)
+print(df)
 
 # h = data['hourly']
 # print(len(h))
