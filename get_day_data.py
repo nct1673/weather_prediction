@@ -11,9 +11,11 @@ from my_api_key import API_KEY
 # Things to change:
 # 1. dt (first is below this part, second is in for loop)
 # 2. csv file name
+# 3. check for loop range
 # 3. record dt for next time execution
 
-# 061725 last dt: 1738854000
+# 250617 last dt: 1738854000 250206:2300
+# 250618 last dt: 1742310000 250318:2300
 
 
 # Replace with your actual API key
@@ -22,7 +24,7 @@ from my_api_key import API_KEY
 # Example coordinates: Klang
 lat = 3.033
 lon = 101.45
-dt = 1735660800 #1/1/25
+dt = 1741881600 #14/3/25
 
 # One Call 3.0 endpoint
 url = "https://api.openweathermap.org/data/3.0/onecall"
@@ -37,9 +39,9 @@ df = pd.DataFrame()
 
 start = time.time()
 
-for i in range(888):
+for i in range(960):
     print(f'Extracting step: {i}')
-    dt = 1735660800 
+    dt = 1741881600 
     dt += i*3600 # 3600secs = 1 hour
     params = {
     "lat": lat,
