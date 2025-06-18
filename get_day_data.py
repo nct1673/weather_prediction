@@ -71,7 +71,7 @@ for i in range(960):
 
 print(f'Last dt: {dt}')
 time_use = time.time() - start
-print(f"Done, finished in {time_use} seconds")
+print(f"Done, finished in {time_use} seconds.")
 
 
 

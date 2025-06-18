@@ -1,9 +1,10 @@
 import os
 import json
 import pandas as pd
+import time
 
-# Things to change:
-# 1. csv filename in last two lines
+start = time.time()
+
 
 folder_path = "data_json"  # 🔁 Change to your actual path
 all_records = []
@@ -78,4 +79,5 @@ df = pd.DataFrame(all_records)
 # Save to CSV
 df.to_csv("data_csv_raw/raw_data.csv", index=False)
 print("✅ All JSON files have been processed and saved to 'data_csv_raw/raw_data.csv'")
-
+time_use = time.time() - start
+print(f"Done, finished in {time_use} seconds.")
