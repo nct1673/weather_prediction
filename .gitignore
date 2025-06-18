@@ -1,2 +1,4 @@
 test.py
 my_api_key.py
+data_csv_raw/
+data_csv_out/
