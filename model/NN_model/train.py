@@ -14,12 +14,12 @@ import matplotlib.pyplot as plt
 
 
 ## Hyperparameters
-epochs = 2000
-lr=1e-6
+epochs = 50
+lr=1e-3
 
 
 # Load CSV
-df = pd.read_csv('../data_csv_out/data.csv')
+df = pd.read_csv('data_csv_out/data.csv')
 
 # Example: assume target column is 'label'
 X = df.drop(['weather_main', 'weather_desc'], axis=1).values
@@ -70,7 +70,8 @@ for epoch in range(epochs):
             correct += (predicted == y_batch).sum().item()
 
     acc = correct / total
-    print(f'Epoch {epoch+1}, Loss: {loss.item():.4f}, Val Accuracy: {acc:.4f}')
+    if (epoch+1)%10 == 0:
+        print(f'Epoch {epoch+1}, Loss: {loss.item():.4f}, Val Accuracy: {acc:.4f}')
 
 
 
@@ -85,7 +86,7 @@ with torch.no_grad():
         all_preds.extend(predicted.cpu().numpy())
         all_labels.extend(y_batch.numpy())
 
-print(classification_report(all_labels, all_preds, target_names=le.classes_))
+# print(classification_report(all_labels, all_preds, target_names=le.classes_))
 
 
 # # Compute confusion matrix

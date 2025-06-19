@@ -128,4 +128,4 @@ df.dropna(subset=['visibility'], inplace=True)
 df.to_csv('data_csv_out/data.csv')
 print("✅ Raw data has been processed and saved to 'data_csv_out/data.csv'")
 time_use = time.time() - start
-print(f"Done, finished in {time_use} seconds.")
+print(f"Finished in {time_use} seconds.")
