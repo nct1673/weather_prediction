@@ -30,7 +30,7 @@ if response.status_code == 200:
     data = response.json()
 
     # Save to JSON file
-    with open("weather_data.json", "w") as f:
+    with open("current_data.json", "w") as f:
         json.dump(data, f, indent=4)
     
     print("Weather data saved to weather_data.json")

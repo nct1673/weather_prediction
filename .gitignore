@@ -2,3 +2,8 @@ test.py
 my_api_key.py
 data_csv_raw/
 data_csv_out/
+trained_model/
+
+# Ignore Python bytecode files
+*.pyc
+__pycache__/

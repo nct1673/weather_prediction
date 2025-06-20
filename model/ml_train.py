@@ -9,7 +9,11 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from imblearn.over_sampling import SMOTE
+from savemodels import save_model
+import time
 
+
+start = time.time()
 
 # Load CSV
 df = pd.read_csv('data_csv_out/data.csv')
@@ -54,6 +58,8 @@ models_name = [
 ]
 
 
+
+
 accu = []
 for i in range(len(models)):
     model = models[i]
@@ -62,7 +68,8 @@ for i in range(len(models)):
     accuracy = accuracy_score(y_val, y_pred)
     accu.append(accuracy)
     print(f'{models_name[i*2]} accuracy: {accuracy}')
-
+    save_model(model, idx=2*i, models_name=models_name)
+   
 
     importances = model.feature_importances_
     feat_importances = pd.Series(importances, index=X.columns)
@@ -74,6 +81,10 @@ for i in range(len(models)):
     accuracy = accuracy_score(y_val, y_pred)
     accu.append(accuracy)
     print(f'{models_name[2*i + 1]} accuracy: {accuracy}')
+    save_model(model, idx=2*i + 1, models_name=models_name)
 
 max_idx = accu.index(max(accu))
 print(f'Best ML model: {models_name[max_idx]}')
+print("✅ All models have been saved to 'trained_model/..'")
+time_use = time.time() - start
+print(f"Finished in {time_use} seconds.")
