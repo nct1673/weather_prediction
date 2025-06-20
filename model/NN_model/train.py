@@ -14,8 +14,8 @@ import matplotlib.pyplot as plt
 
 
 ## Hyperparameters
-epochs = 50
-lr=1e-3
+epochs = 100
+lr=1e-4
 
 
 # Load CSV
@@ -70,7 +70,7 @@ for epoch in range(epochs):
             correct += (predicted == y_batch).sum().item()
 
     acc = correct / total
-    if (epoch+1)%10 == 0:
+    if (epoch+1)%20 == 0:
         print(f'Epoch {epoch+1}, Loss: {loss.item():.4f}, Val Accuracy: {acc:.4f}')
 
 

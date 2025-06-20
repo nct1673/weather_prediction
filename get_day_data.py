@@ -17,6 +17,7 @@ from my_api_key import API_KEY
 # 250617 last dt: 1738854000 250206:2300
 # 250618 last dt: 1742310000 250318:2300
 # 250619 last dt: 1745766000 250427:2300
+# 250620 last dt: 1749222000 250606:2300
 
 
 # Replace with your actual API key
@@ -25,7 +26,7 @@ from my_api_key import API_KEY
 # Example coordinates: Klang
 lat = 3.033
 lon = 101.45
-dt = 1742313600 #19/3/25
+dt = 1745769600 #19/3/25
 
 # One Call 3.0 endpoint
 url = "https://api.openweathermap.org/data/3.0/onecall"
@@ -42,7 +43,7 @@ start = time.time()
 
 for i in range(960):
     print(f'Extracting step: {i}')
-    dt = 1742313600
+    dt = 1745769600
     dt += i*3600 # 3600secs = 1 hour
     params = {
     "lat": lat,
