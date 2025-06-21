@@ -125,6 +125,8 @@ df.drop(drop_cols, axis=1, inplace=True)
 df = df.iloc[12:].reset_index(drop=True)
 df.drop(df[df['weather_main'] == 'Smoke'].index, inplace=True)
 df.drop(df[df['weather_main'] == 'Haze'].index, inplace=True)
+df.drop(df[df['weather_main'] == 'Clear'].index, inplace=True)
+df.drop(df[df['weather_main'] == 'Mist'].index, inplace=True)
 df.dropna(subset=['visibility'], inplace=True)
 
 df.to_csv('data_csv_out/data.csv')
