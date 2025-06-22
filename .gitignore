@@ -4,6 +4,7 @@ data_csv_raw/
 data_csv_out/
 trained_model/
 try_getdata/
+log.txt
 
 # Ignore Python bytecode files
 *.pyc
