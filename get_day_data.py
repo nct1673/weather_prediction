@@ -10,7 +10,7 @@ from my_api_key import API_KEY
 
 # Things to change:
 # 1. dt (first is below this part, second is in for loop)
-# 2. check for loop range
+# 2. check for loop range and the sign in dt update
 # 3. record dt for next time execution
 
 # GMT+8
@@ -21,6 +21,7 @@ from my_api_key import API_KEY
 # 250620 last dt: 1749222000 250606:2300
 
 #250621 last dt: 1732204800 241122:0000
+#250622 last dt: 1728748800 241013:0000
 
 # Replace with your actual API key
 # API_KEY = ""
@@ -28,7 +29,7 @@ from my_api_key import API_KEY
 # Example coordinates: Klang
 lat = 3.033
 lon = 101.45
-dt = 1735660800 #19/3/25
+dt = 1732204800 #19/3/25
 
 # One Call 3.0 endpoint
 url = "https://api.openweathermap.org/data/3.0/onecall"
@@ -44,8 +45,8 @@ df = pd.DataFrame()
 start = time.time()
 
 for i in range(960):
-    print(f'Extracting step: {i}')
-    dt = 1735660800-3600
+    print(f'Extracting step: {i+1}')
+    dt = 1732204800-3600
     dt -= i*3600 # 3600secs = 1 hour
     params = {
     "lat": lat,

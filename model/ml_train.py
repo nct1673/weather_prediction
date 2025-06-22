@@ -70,18 +70,18 @@ for i in range(len(models)):
     print(f'{models_name[i*2]} accuracy: {accuracy}')
     save_model(model, idx=2*i, models_name=models_name)
    
-
-    importances = model.feature_importances_
-    feat_importances = pd.Series(importances, index=X.columns)
-    top_features = feat_importances.sort_values(ascending=False).head(10).index
-    X_train_selected = X_train[top_features]
-    X_test_selected = X_val[top_features]
-    model.fit(X_train, y_train)
-    y_pred = model.predict(X_val)
-    accuracy = accuracy_score(y_val, y_pred)
-    accu.append(accuracy)
-    print(f'{models_name[2*i + 1]} accuracy: {accuracy}')
-    save_model(model, idx=2*i + 1, models_name=models_name)
+    if 2*i + 1 != 7:
+        importances = model.feature_importances_
+        feat_importances = pd.Series(importances, index=X.columns)
+        top_features = feat_importances.sort_values(ascending=False).head(5).index
+        X_train_selected = X_train[top_features]
+        X_test_selected = X_val[top_features]
+        model.fit(X_train, y_train)
+        y_pred = model.predict(X_val)
+        accuracy = accuracy_score(y_val, y_pred)
+        accu.append(accuracy)
+        print(f'{models_name[2*i + 1]} accuracy: {accuracy}')
+        save_model(model, idx=2*i + 1, models_name=models_name)
 
 max_idx = accu.index(max(accu))
 print(f'Best ML model: {models_name[max_idx]}')

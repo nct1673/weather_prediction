@@ -3,6 +3,7 @@ my_api_key.py
 data_csv_raw/
 data_csv_out/
 trained_model/
+try_getdata/
 
 # Ignore Python bytecode files
 *.pyc
