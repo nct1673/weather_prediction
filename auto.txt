@@ -1,0 +1,3 @@
+# use full path !!!
+
+0 * * * * /bin/bash -c "source /home/chen/anaconda3/etc/profile.d/conda.sh && conda activate pt && python /home/chen/Desktop/weather/try_getcurrent.py >> /home/chen/Desktop/weather/log.txt 2>&1"

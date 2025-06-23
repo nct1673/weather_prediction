@@ -36,7 +36,8 @@ if response.status_code == 200:
     utc8 = datetime.fromtimestamp(dt, tz=ZoneInfo("Asia/Kuala_Lumpur"))
 
     # Save to JSON file
-    filename = f'try_getdata/weather_data_{utc8}.json'
+    # /home/chen/Desktop/weather/try_getdata
+    filename = f'/home/chen/Desktop/weather/try_getdata/weather_data_{utc8}.json'
     with open(filename, "w") as f:
         json.dump(data, f, indent=4)
     

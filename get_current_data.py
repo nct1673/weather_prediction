@@ -4,7 +4,7 @@ import pandas as pd
 from my_api_key import API_KEY
 
 # Replace with your actual API key
-API_KEY = ""
+# API_KEY = ""
 
 # Example coordinates: Klang
 lat = 3.033
