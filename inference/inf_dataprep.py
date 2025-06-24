@@ -39,10 +39,10 @@ if response.status_code == 200:
         data = response.json()
 
         # utc = datetime.fromtimestamp(dt, tz=ZoneInfo("Asia/Kuala_Lumpur"))
-        filename_json = f'out_samplejson.json'
-        # Save to JSON file
-        with open(filename_json, "w") as f:
-            json.dump(data, f, indent=4)
+        # filename_json = f'out_samplejson.json'
+        # # Save to JSON file
+        # with open(filename_json, "w") as f:
+        #     json.dump(data, f, indent=4)
 
 # Top-level metadata
 tz = data.get("timezone", "NA")
