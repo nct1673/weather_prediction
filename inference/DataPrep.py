@@ -65,7 +65,43 @@ def get_df(data):
 
 
 
-def dataprep(df):
+
+
+# Function that returns a DataFrame
+def data_preprep(lat, lon, tz, tz_offset, sunrise, sunset, entry, entry_type="hourly"):
+    weather = entry.get("weather", [{}])[0]
+    record = {
+        "entry_type": entry_type,
+        "lat": lat,
+        "lon": lon,
+        "timezone": tz,
+        "timezone_offset": tz_offset,
+        "dt": entry.get("dt", "NA"),
+        "sunrise": sunrise,
+        "sunset": sunset,
+        "temp": entry.get("temp", "NA"),
+        "feels_like": entry.get("feels_like", "NA"),
+        "pressure": entry.get("pressure", "NA"),
+        "humidity": entry.get("humidity", "NA"),
+        "dew_point": entry.get("dew_point", "NA"),
+        "uvi": entry.get("uvi", "NA"),
+        "clouds": entry.get("clouds", "NA"),
+        "visibility": entry.get("visibility", "NA"),
+        "wind_speed": entry.get("wind_speed", "NA"),
+        "wind_deg": entry.get("wind_deg", "NA"),
+        # "wind_gust": entry.get("wind_gust", "NA"),
+        # "pop": entry.get("pop", "NA"),  # Only in hourly
+        # "rain_1h": entry.get("rain", {}).get("1h", "NA"),
+        "weather_id": weather.get("id", "NA"),
+        "weather_main": weather.get("main", "NA"),
+        "weather_desc": weather.get("description", "NA"),
+        "weather_icon": weather.get("icon", "NA")
+    }
+    return pd.DataFrame([record])  # Return as DataFrame
+
+
+
+def inference_prep(df):
     df.drop_duplicates(inplace=True)
     df = df.sort_values(by='dt')
 
@@ -180,11 +216,11 @@ def dataprep(df):
     ]
 
     df.drop(drop_cols, axis=1, inplace=True)
-    df = df.iloc[12:].reset_index(drop=True)
-    df.drop(df[df['weather_main'] == 'Smoke'].index, inplace=True)
-    df.drop(df[df['weather_main'] == 'Haze'].index, inplace=True)
-    df.drop(df[df['weather_main'] == 'Clear'].index, inplace=True)
-    df.drop(df[df['weather_main'] == 'Mist'].index, inplace=True)
-    df.dropna(subset=['visibility'], inplace=True)
+    # df = df.iloc[12:].reset_index(drop=True)
+    # df.drop(df[df['weather_main'] == 'Smoke'].index, inplace=True)
+    # df.drop(df[df['weather_main'] == 'Haze'].index, inplace=True)
+    # df.drop(df[df['weather_main'] == 'Clear'].index, inplace=True)
+    # df.drop(df[df['weather_main'] == 'Mist'].index, inplace=True)
+    # df.dropna(subset=['visibility'], inplace=True)
 
     return df

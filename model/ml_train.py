@@ -1,4 +1,4 @@
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from sklearn.ensemble import RandomForestClassifier, HistGradientBoostingClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
@@ -16,23 +16,29 @@ import time
 start = time.time()
 
 # Load CSV
-df = pd.read_csv('data_csv_out/data.csv')
+df = pd.read_csv('data_csv_out/data.csv', index_col=0)
 
 # Example: assume target column is 'label'
 # X = df.drop(['weather_main', 'weather_desc'], axis=1).values
 # y = df['weather_main'].values
 
 X = df.drop(['weather_main', 'weather_desc'], axis=1)  # ← KEEP as DataFrame
-y = df['weather_main']
+y1 = df['weather_main'] # ['Clouds', 'Rain', 'Thunderstorm']
+y2 = df['weather_desc'] # ['few clouds', 'heavy intensity rain', 'light intensity shower rain', 'light rain', 'moderate rain', 'scattered clouds', 'thunderstorm', 'thunderstorm with heavy rain', 'thunderstorm with light rain', 'thunderstorm with rain', 'very heavy rain']
+# print(f'weather desc type: {len(y2.unique())}')
+# print(f'y2 unique: {y2.unique()}')
+y = y1
 
 # Encode target if it's categorical
 le = LabelEncoder()
 y = le.fit_transform(y)
+print(list(le.classes_))
+
 
 # Train-validation split
 X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
 
-smote = SMOTE(random_state=42)
+smote = SMOTE(k_neighbors=3,random_state=42)
 X_train, y_train = smote.fit_resample(X_train, y_train)
 
 # Convert back to DataFrame
@@ -40,10 +46,10 @@ X_train = pd.DataFrame(X_train, columns=X.columns)
 y_train = pd.Series(y_train)
 
 
-models = [RandomForestClassifier(), 
-          GradientBoostingClassifier(),
+models = [RandomForestClassifier(n_jobs=-1), 
+          HistGradientBoostingClassifier(),
           DecisionTreeClassifier(),
-          xgb.XGBClassifier(),
+          xgb.XGBClassifier(n_jobs=-1),
           ]
 
 models_name = [
@@ -57,7 +63,16 @@ models_name = [
     "XGBoost with FS"
 ]
 
-
+models_name2 = [
+    "Random Forest",
+    "Random Forest with FS",
+    "Gradient Boosting",
+    # "Gradient Boosting with FS",
+    "Decision Tree",
+    "Decision Tree with FS",
+    "XGBoost",
+    # "XGBoost with FS"
+]
 
 
 accu = []
@@ -70,10 +85,10 @@ for i in range(len(models)):
     print(f'{models_name[i*2]} accuracy: {accuracy}')
     save_model(model, idx=2*i, models_name=models_name)
    
-    if 2*i + 1 != 7:
+    if (2*i + 1 != 3) and (2*i + 1 != 7):
         importances = model.feature_importances_
         feat_importances = pd.Series(importances, index=X.columns)
-        top_features = feat_importances.sort_values(ascending=False).head(5).index
+        top_features = feat_importances.sort_values(ascending=False).head(15).index
         X_train_selected = X_train[top_features]
         X_test_selected = X_val[top_features]
         model.fit(X_train, y_train)
@@ -84,7 +99,7 @@ for i in range(len(models)):
         save_model(model, idx=2*i + 1, models_name=models_name)
 
 max_idx = accu.index(max(accu))
-print(f'Best ML model: {models_name[max_idx]}')
+print(f'Best ML model: {models_name2[max_idx]}')
 print("✅ All models have been saved to 'trained_model/..'")
 time_use = time.time() - start
 print(f"Finished in {time_use} seconds.")

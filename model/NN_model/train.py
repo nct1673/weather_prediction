@@ -16,14 +16,14 @@ import matplotlib.pyplot as plt
 ## Hyperparameters
 epochs = 100
 lr=1e-4
-
+output_dim = 11
 
 # Load CSV
 df = pd.read_csv('data_csv_out/data.csv')
 
 # Example: assume target column is 'label'
 X = df.drop(['weather_main', 'weather_desc'], axis=1).values
-y = df['weather_main'].values
+y = df['weather_desc'].values
 
 # Encode target if it's categorical
 le = LabelEncoder()
@@ -41,7 +41,7 @@ val_loader = DataLoader(val_ds, batch_size=64)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f'Device: {device}')
 
-model = NNModel(input_dim=X.shape[1], output_dim=3).to(device)
+model = NNModel(input_dim=X.shape[1], output_dim=output_dim).to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 

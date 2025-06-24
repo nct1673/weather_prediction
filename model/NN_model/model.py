@@ -6,13 +6,13 @@ class NNModel(nn.Module):
         super(NNModel, self).__init__()
         self.net = nn.Sequential(
             nn.Linear(input_dim, 256),
-            nn.ReLU(),
+            nn.Sigmoid(),
             nn.BatchNorm1d(256),
             nn.Linear(256, 128),
             nn.ReLU(),
             nn.Dropout(0),
             nn.Linear(128, 32),
-            nn.ReLU(),
+            nn.Sigmoid(),
             nn.Dropout(0),
             nn.Linear(32, output_dim)
         )
