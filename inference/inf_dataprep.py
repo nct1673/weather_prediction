@@ -4,14 +4,14 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 from statsmodels.tsa.seasonal import seasonal_decompose
 import time
-from DataPrep import get_df, data_preprep, inference_prep
+from DataPrep import data_preprep, inference_prep
 import json
 from my_api_key import API_KEY
 import requests
 import joblib
 import warnings
 warnings.filterwarnings("ignore")
-
+import xgboost as xgb
 
 df_raw = pd.read_csv('/home/chen/Desktop/weather/data_csv_raw/raw_data.csv')
 
@@ -62,6 +62,10 @@ for h in data.get("hourly", []):
 df_json = pd.concat(df_json, ignore_index=True) # concat current and hourly data
 df_json.drop('entry_type', axis=1, inplace=True)
 
+df_viz = df_json.head(7)
+df_viz = df_viz.drop(['weather_main', 'weather_desc', 'weather_id', 'weather_icon'], axis=1) 
+
+
 # concat with raw data for feature engineering
 df_raw100 = df_raw.tail(100)
 df_pre = pd.concat([df_raw100, df_json], ignore_index=True)
@@ -69,29 +73,52 @@ df_pre = pd.concat([df_raw100, df_json], ignore_index=True)
 df_done = inference_prep(df_pre)
 df = df_done.iloc[100:].reset_index(drop=True)
 df = df.drop(['weather_main', 'weather_desc'], axis=1) 
+df = df.head(7)
 
+# print(df.shape)
+# print(df_json.shape)
 # print(df_pre.shape)
 # print(df_done.shape)
 # print(df.iloc[0, :].shape)
 # df.to_csv('out_sample2.csv')
 
-X1 = df.iloc[0, :]
-model = 'trained_model/Decision Tree.pkl'
-loaded_model = joblib.load(model)
-pred = loaded_model.predict([X1])
+# X1 = df.iloc[0, :]
+model_file = 'trained_model/XGBoost.pkl'
+model = joblib.load(model_file)
 
+
+preds = []
 for i in range(7):
      X_i = X1 = df.iloc[i, :]
-     pred = loaded_model.predict([X_i])
-     if pred[0] == 0:
-          pred_inv = 'Clouds'
-     elif pred[0] == 1:
-          pred_inv = 'Rain'
-     else:
-          pred_inv = 'Thunderstorm'
-    
-     print(pred_inv)
+     pred = model.predict([X_i])
+     preds.append(pred[0])
 
+ref = ['Clouds', 'Rain', 'Thunderstorm']
+weather_pred = [ref[i] for i in preds]
+df_viz['weather_pred'] = weather_pred
+df_viz = df_viz.iloc[1:].reset_index(drop=True)
+
+
+def save_weather_data(df):
+    # Convert Unix time to readable time string (e.g., "14:00")
+    # df['timestamp'] = df['dt'].apply(
+    #     lambda x: datetime.utcfromtimestamp(x).strftime('%Y-%m-%d %H:%M')
+    # )
+
+    df['timestamp'] = df['dt'].apply(
+    lambda x: datetime.fromtimestamp(x, tz=ZoneInfo("Asia/Kuala_Lumpur")).strftime('%Y-%m-%d %H:%M')
+    )
+    df['temp'] = (df['temp'] - 273.15).round(2)
+    df['feels_like'] = df['feels_like'] - 273.15
+    df['visibility'] = df['visibility']/1000
+
+    return df.to_dict(orient='records')
+
+df2 = save_weather_data(df_viz)
+with open("/home/chen/Desktop/weather_web/data/pred_out.json", "w") as f:
+    json.dump(df2, f, indent=2)
+# df_viz.to_csv('/home/chen/Desktop/weather_web/data/pred_out.csv', index=False)
+# print(weather_pred)
 # print(type(pred))
 
 

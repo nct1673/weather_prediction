@@ -5,6 +5,7 @@ data_csv_out/
 trained_model/
 try_getdata/
 log.txt
+data_json_live/
 
 # Ignore Python bytecode files
 *.pyc
