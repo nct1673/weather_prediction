@@ -1,0 +1,32 @@
+{
+    "lat": 3.033,
+    "lon": 101.45,
+    "timezone": "Asia/Kuala_Lumpur",
+    "timezone_offset": 28800,
+    "data": [
+        {
+            "dt": 1717156800,
+            "sunrise": 1717110215,
+            "sunset": 1717154433,
+            "temp": 28.25,
+            "feels_like": 33.61,
+            "pressure": 1010,
+            "humidity": 85,
+            "dew_point": 25.48,
+            "clouds": 97,
+            "wind_speed": 2.33,
+            "wind_deg": 204,
+            "weather": [
+                {
+                    "id": 500,
+                    "main": "Rain",
+                    "description": "light rain",
+                    "icon": "10n"
+                }
+            ],
+            "rain": {
+                "1h": 1
+            }
+        }
+    ]
+}
