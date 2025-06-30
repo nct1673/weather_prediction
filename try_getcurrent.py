@@ -4,6 +4,7 @@ import pandas as pd
 from my_api_key import API_KEY
 from datetime import datetime
 from zoneinfo import ZoneInfo
+from config import server_config
 
 # Replace with your actual API key
 # API_KEY = ""
@@ -36,8 +37,8 @@ if response.status_code == 200:
     utc8 = datetime.fromtimestamp(dt, tz=ZoneInfo("Asia/Kuala_Lumpur"))
 
     # Save to JSON file
-    # /home/chen/Desktop/weather/try_getdata
-    filename = f'/home/chen/Desktop/weather/data_json_live/weather_data_{utc8}.json'
+    # /home/chen/weather/try_getdata
+    filename = f'/home/{server_config}/weather/data_json_live/weather_data_{utc8}.json'
     with open(filename, "w") as f:
         json.dump(data, f, indent=4)
     
@@ -64,7 +65,7 @@ if response.status_code == 200:
     data = response.json()
 
     utc = datetime.fromtimestamp(dt, tz=ZoneInfo("Asia/Kuala_Lumpur"))
-    filename_json = f'/home/chen/Desktop/weather/data_json/weather_data_{utc8}.json'
+    filename_json = f'/home/{server_config}/weather/data_json/weather_data_{utc8}.json'
     # Save to JSON file
     with open(filename_json, "w") as f:
         json.dump(data, f, indent=4)

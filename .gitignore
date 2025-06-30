@@ -6,6 +6,7 @@ trained_model/
 try_getdata/
 log.txt
 data_json_live/
+dt100/
 
 # Ignore Python bytecode files
 *.pyc

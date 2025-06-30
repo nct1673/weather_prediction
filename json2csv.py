@@ -2,11 +2,12 @@ import os
 import json
 import pandas as pd
 import time
+from config import server_config
 
 start = time.time()
 
 
-folder_path = "data_json"  # 🔁 Change to your actual path
+folder_path = f'/home/{server_config}/weather/data_json'  # 🔁 Change to your actual path
 all_records = []
 
 def safe_get(d, key, default="NA"):
@@ -77,7 +78,8 @@ df = pd.DataFrame(all_records)
 # df.replace("NA", np.nan, inplace=True)
 
 # Save to CSV
-df.to_csv("data_csv_raw/raw_data.csv", index=False)
+filename = f'/home/{server_config}/weather/data_csv_raw/raw_data.csv'
+df.to_csv(filename, index=False)
 print("✅ All JSON files have been processed and saved to 'data_csv_raw/raw_data.csv'")
 time_use = time.time() - start
 print(f"Finished in {time_use} seconds.")

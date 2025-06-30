@@ -12,8 +12,13 @@ import joblib
 import warnings
 warnings.filterwarnings("ignore")
 import xgboost as xgb
+from config import server_config
 
-df_raw = pd.read_csv('/home/chen/Desktop/weather/data_csv_raw/raw_data.csv')
+filename_dfraw = f'/home/{server_config}/weather/data_csv_raw/raw_data.csv'
+filename_model = f'/home/{server_config}/weather/trained_model/XGBoost.pkl'
+filename_predout = f'/home/{server_config}/weather_web/data/pred_out.json'
+
+df_raw = pd.read_csv(filename_dfraw)
 
 # Example coordinates: Klang
 lat = 3.033
@@ -62,8 +67,8 @@ for h in data.get("hourly", []):
 df_json = pd.concat(df_json, ignore_index=True) # concat current and hourly data
 df_json.drop('entry_type', axis=1, inplace=True)
 
-df_viz = df_json.head(7)
-df_viz = df_viz.drop(['weather_main', 'weather_desc', 'weather_id', 'weather_icon'], axis=1) 
+# df_viz = df_json.head(7)
+df_viz = df_json.drop(['weather_main', 'weather_desc', 'weather_id', 'weather_icon'], axis=1) 
 
 
 # concat with raw data for feature engineering
@@ -73,7 +78,7 @@ df_pre = pd.concat([df_raw100, df_json], ignore_index=True)
 df_done = inference_prep(df_pre)
 df = df_done.iloc[100:].reset_index(drop=True)
 df = df.drop(['weather_main', 'weather_desc'], axis=1) 
-df = df.head(7)
+# df = df.head(7)
 
 # print(df.shape)
 # print(df_json.shape)
@@ -83,12 +88,12 @@ df = df.head(7)
 # df.to_csv('out_sample2.csv')
 
 # X1 = df.iloc[0, :]
-model_file = 'trained_model/XGBoost.pkl'
-model = joblib.load(model_file)
+# model_file = '/home/{server_config}/weather/trained_model/XGBoost.pkl'
+model = joblib.load(filename_model)
 
 
 preds = []
-for i in range(7):
+for i in range(49):
      X_i = X1 = df.iloc[i, :]
      pred = model.predict([X_i])
      preds.append(pred[0])
@@ -115,9 +120,9 @@ def save_weather_data(df):
     return df.to_dict(orient='records')
 
 df2 = save_weather_data(df_viz)
-with open("/home/chen/Desktop/weather_web/data/pred_out.json", "w") as f:
+with open(filename_predout, "w") as f:
     json.dump(df2, f, indent=2)
-# df_viz.to_csv('/home/chen/Desktop/weather_web/data/pred_out.csv', index=False)
+# df_viz.to_csv('/home/{server_config}/weather_web/data/pred_out.csv', index=False)
 # print(weather_pred)
 # print(type(pred))
 

@@ -4,6 +4,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 from statsmodels.tsa.seasonal import seasonal_decompose
 import time
+from config import server_config
 
 start = time.time()
 
@@ -129,7 +130,8 @@ df.drop(df[df['weather_main'] == 'Clear'].index, inplace=True)
 df.drop(df[df['weather_main'] == 'Mist'].index, inplace=True)
 df.dropna(subset=['visibility'], inplace=True)
 
-df.to_csv('data_csv_out/data.csv')
+filename = f'/home/{server_config}/weather/data_csv_out/data.csv'
+df.to_csv(filename)
 print("✅ Raw data has been processed and saved to 'data_csv_out/data.csv'")
 time_use = time.time() - start
 print(f"Finished in {time_use} seconds.")
